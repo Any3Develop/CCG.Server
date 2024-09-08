@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCG_WebApi", "CCG_WebApi\CCG_WebApi.csproj", "{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCG_Shared", "CCG_Shared\CCG_Shared.csproj", "{A126A06E-5216-4F3A-8E27-555AEF244ADD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A126A06E-5216-4F3A-8E27-555AEF244ADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A126A06E-5216-4F3A-8E27-555AEF244ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A126A06E-5216-4F3A-8E27-555AEF244ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A126A06E-5216-4F3A-8E27-555AEF244ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
