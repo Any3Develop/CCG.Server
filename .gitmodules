@@ -1,0 +1,3 @@
+[submodule "CCG_Shared"]
+	path = CCG_Shared
+	url = https://github.com/Any3Develop/CCG_Shared.git
