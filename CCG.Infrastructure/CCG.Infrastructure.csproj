@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CCG.Application\CCG.Application.csproj" />
-      <ProjectReference Include="..\CCG.Domain\CCG.Domain.csproj" />
     </ItemGroup>
 
 </Project>
