@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCG_WebApi", "CCG_WebApi\CCG_WebApi.csproj", "{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCG.WebApi", "CCG.WebApi\CCG.WebApi.csproj", "{A1116B3D-83A3-4D38-96D2-9BAAA3A825A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCG.Shared", "CCG.Shared\CCG.Shared.csproj", "{A126A06E-5216-4F3A-8E27-555AEF244ADD}"
 EndProject
