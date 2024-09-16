@@ -14,9 +14,9 @@ namespace CCG.Infrastructure.DI
     {
         public static void InstallInfrastructure(this IServiceCollection service, IConfiguration configuration)
         {
-            service.AddDbContext<SqLiteDbContext>(options =>
+            service.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlite("Data Source=localdatabase.db", o =>
+                options.UseSqlite(configuration.GetConnectionString("SQLiteDbConnection"), o =>
                 {
                     o.CommandTimeout(360);
                     o.MigrationsHistoryTable("__EFMigrationsHistory", "public");
@@ -35,11 +35,11 @@ namespace CCG.Infrastructure.DI
                     o.User.AllowedUserNameCharacters = string.Empty;
                 })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<SqLiteDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>();
             
             service.AddScoped<ICurrentUserService, CurrentUserService>();
             service.AddScoped<IIdentityProviderService, IdentityProviderService>();
-            service.AddScoped<IAppDbContext, SqLiteDbContext>(provider => provider.GetService<SqLiteDbContext>());
+            service.AddScoped<IAppDbContext, AppDbContext>(provider => provider.GetService<AppDbContext>());
         }
     }
 }

@@ -127,6 +127,7 @@ namespace CCG.WebApi.Infrastructure.Configurations
             });
 
             service.AddResponseCaching();
+            service.AddResponseCompression();
         }
 
         public static void ConfigureWebApi(this IApplicationBuilder app, IServiceProvider serviceProvider)
