@@ -2,6 +2,7 @@
 using CCG.Application.Contracts.Persistence;
 using CCG.Domain.Entities.Identity;
 using CCG.Infrastructure.Persistence;
+using CCG.Infrastructure.Persistence.DbSeed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,18 +11,19 @@ namespace CCG.Infrastructure.DI
 {
     public static class DiInfrastructure
     {
-        public static void InstallInfrastructure(this IServiceCollection service, IConfiguration configuration)
+        public static void InstallInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            service.AddDbContext<AppDbContext>(options =>
+            var connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory.Replace(@"CCG.WebApi\bin\Debug\net8.0","CCG.Infrastructure"), "ccg.demo.db")}";
+            services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlite(configuration.GetConnectionString("SQLiteDbConnection"), o =>
+                options.UseSqlite(connectionString, o =>
                 {
                     o.CommandTimeout(360);
                     o.MigrationsHistoryTable("__EFMigrationsHistory", "public");
                 });
             });
             
-            service.AddDefaultIdentity<UserEntity>(o =>
+            services.AddDefaultIdentity<UserEntity>(o =>
             {
                 o.SignIn.RequireConfirmedAccount = false;
                 o.Password.RequireDigit = false;
@@ -34,7 +36,9 @@ namespace CCG.Infrastructure.DI
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>();
-            service.AddScoped<IAppDbContext, AppDbContext>(provider => provider.GetService<AppDbContext>());
+            
+            services.AddScoped<IAppDbContext, AppDbContext>(provider => provider.GetService<AppDbContext>());
+            services.AddScoped<IDbSeedService, DbSeedService>();
         }
     }
 }

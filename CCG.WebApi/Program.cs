@@ -17,6 +17,5 @@ builder.Services.InstallInfrastructure(builder.Configuration);
 builder.Services.InstallWebApi(builder.Configuration);
 
 var app = builder.Build();
-app.ConfigureWebApi(app.Services);
-
+await app.ConfigureWebApiAsync(app.Services);
 await app.RunAsync();

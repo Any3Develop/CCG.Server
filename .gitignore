@@ -340,3 +340,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 CodeMaid.config
+CCG.Infrastructure/ccg.demo.db-wal
+CCG.Infrastructure/ccg.demo.db-shm

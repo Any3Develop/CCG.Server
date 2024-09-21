@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using CCG.Application.Contracts.Identity;
+using CCG.Application.Services;
 using CCG.Infrastructure.Configurations;
 using CCG.WebApi.Infrastructure.ActionFilter;
 using CCG.WebApi.Infrastructure.Services;
@@ -18,19 +19,19 @@ namespace CCG.WebApi.Infrastructure.DI
 {
     public static class DiWebApi
     {
-        public static void InstallWebApi(this IServiceCollection service, IConfiguration configuration)
+        public static void InstallWebApi(this IServiceCollection services, IConfiguration configuration)
         {
-            service.AddHttpClient();
-            service.AddControllers().AddNewtonsoftJson(options =>
+            services.AddHttpClient();
+            services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
             var jwtTokenConfig = configuration.GetSection("jwtTokenConfig").Get<JwtTokenConfig>();
-            service.AddSingleton(jwtTokenConfig);
+            services.AddSingleton(jwtTokenConfig);
 
-            service.AddAuthentication(x =>
+            services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -80,13 +81,13 @@ namespace CCG.WebApi.Infrastructure.DI
                 };
             });
 
-            service.AddAuthorizationBuilder().AddPolicy("RequireAdministratorRole", policy =>
+            services.AddAuthorizationBuilder().AddPolicy("RequireAdministratorRole", policy =>
             {
                 policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
                 policy.RequireRole("Admin");
             });
 
-            service.AddSwaggerGen(c =>
+            services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -124,13 +125,14 @@ namespace CCG.WebApi.Infrastructure.DI
                     c.IncludeXmlComments(filePath, true);
             });
 
-            service.AddCors(o => o.AddPolicy("AllowAll", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-            service.AddResponseCaching();
-            service.AddResponseCompression();
+            services.AddCors(o => o.AddPolicy("AllowAll", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddResponseCaching();
+            services.AddResponseCompression();
 
 
-            service.AddScoped<ICurrentUserService, CurrentUserService>();
-            service.AddScoped<IIdentityProviderService, IdentityProviderService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IIdentityProviderService, IdentityProviderService>();
+            services.AddSingleton<IApplicationEnvironment, ApplicationEnvironment>();
         }
     }
 }

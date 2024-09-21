@@ -24,11 +24,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Persistence\Migrations\" />
+      <ProjectReference Include="..\CCG.Application\CCG.Application.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CCG.Application\CCG.Application.csproj" />
+      <None Update="ccg.demo.db">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -1,12 +1,15 @@
 ﻿using CCG.Application.DI;
+using CCG.Application.Services;
+using CCG.Infrastructure.Persistence.DbSeed;
 using CCG.WebApi.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CCG.WebApi.Infrastructure.Configurations
 {
     public static class WebApiConfiguration
     {
-        public static void ConfigureWebApi(this IApplicationBuilder app, IServiceProvider serviceProvider)
+        public static async Task ConfigureWebApiAsync(this IApplicationBuilder app, IServiceProvider services)
         {
             app.UseExceptionHandler("/Error");
             app.UseHsts();
@@ -34,7 +37,18 @@ namespace CCG.WebApi.Infrastructure.Configurations
                 endpoints.MapControllers();
             });
 
-            serviceProvider.EnsureNonLazySingletones(); // create all non lazy singletons.
+            services.EnsureNonLazySingletones(); // create all non lazy singletons.
+
+            using var scope = services.CreateScope();
+            var servicesScoped = scope.ServiceProvider;
+            var env = servicesScoped.GetRequiredService<IApplicationEnvironment>();
+            var dbSeederService = servicesScoped.GetRequiredService<IDbSeedService>();
+            
+            if (env.IsProduction())
+                await dbSeederService.Migrate();
+                
+            await dbSeederService.Seed();
+            await dbSeederService.CleanUp();
         }
     }
 }

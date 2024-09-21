@@ -7,10 +7,10 @@ namespace CCG.Application.DI
 {
     public static class DiApplication
     {
-        public static void InstallApplication(this IServiceCollection service)
+        public static void InstallApplication(this IServiceCollection services)
         {
-            service.AddAutoMapper((serviceProvider, builder) => builder.AddProfile(new AutoMapProfile(serviceProvider)), Array.Empty<Type>());
-            service.AddNonLazySingleton<ISharedLogger, AppSharedLogger>();
+            services.AddAutoMapper((serviceProvider, builder) => builder.AddProfile(new AutoMapProfile(serviceProvider)), Array.Empty<Type>());
+            services.AddNonLazySingleton<ISharedLogger, AppSharedLogger>();
         }
     }
 }
