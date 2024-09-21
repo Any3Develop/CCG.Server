@@ -9,11 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
 builder.Services.InstallApplication();
-builder.Services.InstallInfrastructure(builder.Configuration);
+builder.Services.InstallInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.InstallWebApi(builder.Configuration);
 
 var app = builder.Build();

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace CCG.Infrastructure.DI
 {
-    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    internal class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         public AppDbContext CreateDbContext(string[] args)
         {

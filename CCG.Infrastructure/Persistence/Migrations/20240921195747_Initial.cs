@@ -32,6 +32,7 @@ namespace CCG.Infrastructure.Persistence.Migrations
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     AccessToken = table.Column<string>(type: "TEXT", nullable: true),
                     AccessTokenExpireAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Created = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Updated = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),

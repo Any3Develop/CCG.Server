@@ -3,17 +3,22 @@ using CCG.Application.Contracts.Persistence;
 using CCG.Domain.Entities.Identity;
 using CCG.Infrastructure.Persistence;
 using CCG.Infrastructure.Persistence.DbSeed;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace CCG.Infrastructure.DI
 {
     public static class DiInfrastructure
     {
-        public static void InstallInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static void InstallInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
-            var connectionString = $"Data Source={Path.Combine(AppContext.BaseDirectory.Replace(@"CCG.WebApi\bin\Debug\net8.0","CCG.Infrastructure"), "ccg.demo.db")}";
+            var connectionString = env.IsDevelopment()
+                ? $"Data Source={Path.Combine(AppContext.BaseDirectory.Replace(@"CCG.WebApi\bin\Debug\net8.0", "CCG.Infrastructure"), "ccg.demo.db")}"
+                : configuration.GetConnectionString("DbConnection");
+            
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlite(connectionString, o =>

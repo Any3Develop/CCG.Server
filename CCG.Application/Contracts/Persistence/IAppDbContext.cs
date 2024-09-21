@@ -6,6 +6,8 @@ namespace CCG.Application.Contracts.Persistence
     public interface IAppDbContext
     {
         Task SaveChangesAsync();
+        Task MigrateAsync();
+        Task<IEnumerable<string>> GetPendingMigrationsAsync();
         DbSet<UserEntity> Users { get; }
     }
 }

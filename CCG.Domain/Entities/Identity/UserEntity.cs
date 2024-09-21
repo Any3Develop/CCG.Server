@@ -7,7 +7,7 @@ namespace CCG.Domain.Entities.Identity
     {
         public string AccessToken { get; set; }
         public DateTime AccessTokenExpireAt { get; set; }
-        public DateTime Created { get; } = DateTime.UtcNow;
+        public DateTime Created { get; set; } = DateTime.UtcNow;
         public DateTime Updated { get; set; } = DateTime.UtcNow;
     }
 }

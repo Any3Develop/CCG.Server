@@ -1,15 +1,15 @@
 using CCG.Application;
+using CCG.Application.Contracts.Persistence;
 using CCG.Domain.Entities.Identity;
 using CCG.Shared.Common.Logger;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace CCG.Infrastructure.Persistence.DbSeed
 {
     public class DbSeedService(
             RoleManager<IdentityRole> roleManager,
             UserManager<UserEntity> userManager,
-            AppDbContext dbContext)
+            IAppDbContext dbContext)
         : IDbSeedService
     {
         public async Task Seed()
@@ -21,9 +21,9 @@ namespace CCG.Infrastructure.Persistence.DbSeed
 
         public async Task Migrate()
         {
-            var pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync();
+            var pendingMigrations = await dbContext.GetPendingMigrationsAsync();
             if (pendingMigrations.Any())
-                await dbContext.Database.MigrateAsync();
+                await dbContext.MigrateAsync();
         }
 
         private async Task CreateRoles()
