@@ -38,4 +38,11 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Pages\Admin\Account\AccessDenied.cshtml" />
+      <None Remove="Pages\Admin\Account\Login.cshtml" />
+      <None Remove="Pages\Admin\Account\Logout.cshtml" />
+      <None Remove="Pages\Admin\_ValidationScriptsPartial.cshtml" />
+    </ItemGroup>
+
 </Project>

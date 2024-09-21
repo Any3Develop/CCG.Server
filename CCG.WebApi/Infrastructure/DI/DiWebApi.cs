@@ -125,10 +125,14 @@ namespace CCG.WebApi.Infrastructure.DI
                     c.IncludeXmlComments(filePath, true);
             });
 
+            services.AddRazorPages(o =>
+            {
+                o.Conventions.AuthorizeFolder("/Admin", "RequireAdministratorRole");
+                o.Conventions.AllowAnonymousToPage("/Admin/Login");
+            });
             services.AddCors(o => o.AddPolicy("AllowAll", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddResponseCaching();
             services.AddResponseCompression();
-
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IIdentityProviderService, IdentityProviderService>();

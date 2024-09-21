@@ -33,10 +33,13 @@ namespace CCG.WebApi.Infrastructure.Configurations
             app.UseResponseCaching();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
+                foreach (var route in endpoints.DataSources.SelectMany(ds => ds.Endpoints))
+                {
+                    Console.WriteLine($"Маршрут: {route.DisplayName}");
+                }
             });
-
             services.EnsureNonLazySingletones(); // create all non lazy singletons.
 
             using var scope = services.CreateScope();
