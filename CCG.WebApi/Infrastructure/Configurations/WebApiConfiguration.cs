@@ -88,8 +88,11 @@ namespace CCG.WebApi.Infrastructure.Configurations
 
             service.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(VersionInfo.ApiVersion,
-                    new OpenApiInfo {Title = VersionInfo.SolutionName, Version = VersionInfo.ApiVersion});
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = VersionInfo.SolutionName, 
+                    Version = VersionInfo.ApiVersion
+                });
 
                 var securityScheme = new OpenApiSecurityScheme
                 {
@@ -106,26 +109,21 @@ namespace CCG.WebApi.Infrastructure.Configurations
                     }
                 };
 
-                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                var requirement = new OpenApiSecurityRequirement
                 {
                     {securityScheme, Array.Empty<string>()}
-                });
-
+                };
+                
+                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+                c.AddSecurityRequirement(requirement);
                 c.OperationFilter<ReqTokenOperationFilter>();
 
-                var filePath = Path.Combine(AppContext.BaseDirectory,
-                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+                var filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                 if (File.Exists(filePath))
                     c.IncludeXmlComments(filePath, true);
             });
 
-            service.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll",
-                    builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
-            });
-
+            service.AddCors(options => options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             service.AddResponseCaching();
             service.AddResponseCompression();
         }
@@ -152,8 +150,12 @@ namespace CCG.WebApi.Infrastructure.Configurations
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseResponseCaching();
-            
-            
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+            });
+
             serviceProvider.EnsureNonLazySingletones(); // create all non lazy singletons.
         }
     }

@@ -2,7 +2,7 @@
 {
     public static class VersionInfo
     {
-        public static string ApiVersion => "v.1";
-        public static string SolutionName => "CCG.Demo";
+        public const string ApiVersion = "v.1";
+        public const string SolutionName = "CCG.Demo";
     }
 }
