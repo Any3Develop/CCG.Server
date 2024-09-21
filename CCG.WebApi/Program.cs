@@ -1,6 +1,7 @@
 ﻿using CCG.Application.DI;
 using CCG.Infrastructure.DI;
 using CCG.WebApi.Infrastructure.Configurations;
+using CCG.WebApi.Infrastructure.DI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 

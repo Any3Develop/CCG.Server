@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using CCG.Application.Contracts.Identity;
 using CCG.Application.Contracts.Persistence;
 using CCG.Domain.Entities.Identity;
 using CCG.Infrastructure.Persistence;
-using CCG.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -36,9 +34,6 @@ namespace CCG.Infrastructure.DI
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>();
-            
-            service.AddScoped<ICurrentUserService, CurrentUserService>();
-            service.AddScoped<IIdentityProviderService, IdentityProviderService>();
             service.AddScoped<IAppDbContext, AppDbContext>(provider => provider.GetService<AppDbContext>());
         }
     }

@@ -4,7 +4,7 @@ using CCG.Application.Contracts.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace CCG.Infrastructure.Services
+namespace CCG.WebApi.Infrastructure.Services
 {
     public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
     {

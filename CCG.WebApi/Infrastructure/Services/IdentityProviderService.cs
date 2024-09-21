@@ -8,7 +8,7 @@ using CCG.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CCG.Infrastructure.Services
+namespace CCG.WebApi.Infrastructure.Services
 {
     public class IdentityProviderService(
 		    IAppDbContext dbContext,
