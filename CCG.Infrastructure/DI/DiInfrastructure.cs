@@ -26,13 +26,19 @@ namespace CCG.Infrastructure.DI
             services.AddDefaultIdentity<UserEntity>(o =>
             {
                 o.SignIn.RequireConfirmedAccount = false;
+                
                 o.Password.RequireDigit = false;
                 o.Password.RequireUppercase = false;
                 o.Password.RequiredLength = 4;
                 o.Password.RequireLowercase = false;
                 o.Password.RequireNonAlphanumeric = false;
+                
                 o.User.RequireUniqueEmail = false;
                 o.User.AllowedUserNameCharacters = string.Empty;
+                
+                o.Lockout.MaxFailedAccessAttempts = 5;
+                o.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                o.Lockout.AllowedForNewUsers = true;
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>();

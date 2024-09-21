@@ -17,43 +17,24 @@ namespace CCG.WebApi.Infrastructure.Services
 		    ICurrentUserService currentUserService) 
 	    : IIdentityProviderService
 	{
-		public async Task<UserEntity> UpdateToken(UserEntity user)
+		public async Task<UserEntity> UpdateTokenAsync(UserEntity user)
 		{
 			user.AccessTokenExpireAt = DateTime.UtcNow.AddYears(1);
 			user.AccessToken = await GenerateJwtTokenAsync(user);
 			await dbContext.SaveChangesAsync();
+			await userManager.UpdateAsync(user);
 			return user;
 		}
 
 		public async Task<UserEntity> ExtractUserFromBearerAsync()
         {
-	        if (string.IsNullOrWhiteSpace(currentUserService.Token)) 
-		        throw new Exception("Application token is empty");
-	        
-	        if (IsAccessTokenValid(currentUserService.Token)) 
-		        throw new Exception("Access token has expired.");
-
-	        var user = await userManager.GetUserAsync(currentUserService.Claims);
-
-            if (user is null)
-	            throw new Exception("User not found by application token data");
-            
-            return user;
+            return await userManager.GetUserAsync(currentUserService.Claims);
         }
-		
-		private bool IsAccessTokenValid(string token)
-		{
-			var jwtTokenHandler = new JwtSecurityTokenHandler();
-
-			var tokenExpiresDate = jwtTokenHandler.ReadToken(token).ValidTo;
-
-			return tokenExpiresDate <= DateTime.UtcNow;
-		}
 		
 		private async Task<string> GenerateJwtTokenAsync(UserEntity user)
 		{
 			var claims = new List<Claim> {
-				new(ClaimTypes.NameIdentifier, user.UserName),
+				new(ClaimTypes.NameIdentifier, user.Id),
 				new(JwtRegisteredClaimNames.NameId, user.Id),
 				new(JwtRegisteredClaimNames.UniqueName, user.UserName),
 				new(JwtRegisteredClaimNames.Sub, user.UserName),
@@ -65,11 +46,11 @@ namespace CCG.WebApi.Infrastructure.Services
 
 			var jwtToken = new JwtSecurityToken(
 				jwtTokenConfig.Issuer,
-				jwtTokenConfig.Issuer,
+				jwtTokenConfig.Audience,
 				claims,
 				expires: user.AccessTokenExpireAt,
 				signingCredentials: new SigningCredentials(
-					new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret)),
+					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenConfig.Secret)),
 					SecurityAlgorithms.HmacSha256Signature));
 
 			return new JwtSecurityTokenHandler().WriteToken(jwtToken);

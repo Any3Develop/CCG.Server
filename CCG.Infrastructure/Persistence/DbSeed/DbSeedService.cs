@@ -1,8 +1,7 @@
-using AutoMapper;
+using CCG.Application;
 using CCG.Domain.Entities.Identity;
 using CCG.Shared.Common.Logger;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace CCG.Infrastructure.Persistence.DbSeed
@@ -31,7 +30,7 @@ namespace CCG.Infrastructure.Persistence.DbSeed
         {
             try
             {
-                var roleNames = new[] {"Admin", "Trusted-Player", "Player"};
+                var roleNames = new[] {Constants.AdminRole, "Trusted-Player", "Player"};
                 foreach (var roleName in roleNames)
                 {
                     var existsAsync = await roleManager.RoleExistsAsync(roleName);
@@ -41,7 +40,7 @@ namespace CCG.Infrastructure.Persistence.DbSeed
                     await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
 
-                await CreateUser("admin@ccgdemo.com", "Admin", "ccgdemo", "Admin");
+                await CreateUser(Constants.AdminEmail, Constants.AdminNick, Constants.AdminPass, Constants.AdminRole);
             }
             catch (Exception e)
             {

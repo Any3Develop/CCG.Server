@@ -31,6 +31,8 @@
       <None Update="ccg.demo.db">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </None>
+      <None Remove="ccg.demo.db-wal" />
+      <None Remove="ccg.demo.db-shm" />
     </ItemGroup>
 
 </Project>

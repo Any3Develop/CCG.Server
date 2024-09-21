@@ -1,5 +1,10 @@
-﻿using CCG.WebApi.Infrastructure;
+﻿using CCG.Application;
+using CCG.Application.Contracts.Identity;
+using CCG.Domain.Entities.Identity;
+using CCG.Infrastructure.Persistence;
+using CCG.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CCG.WebApi.Controllers
@@ -7,12 +12,25 @@ namespace CCG.WebApi.Controllers
     [Route("api/" + VersionInfo.ApiVersion + "/[controller]")]
     [ApiController]
     [Authorize]
-    public class LobbyController : ControllerBase
+    public class LobbyController(IIdentityProviderService identityProviderService, UserManager<UserEntity> userManager) : ControllerBase
     {
-        [HttpGet(nameof(GetLobbyInfi))]
-        public IActionResult GetLobbyInfi()
+        [HttpGet(nameof(AuthAdmin))]
+        [AllowAnonymous]
+        public async Task<IActionResult> AuthAdmin()
         {
-            return Ok("It works.");
+            var user = await userManager.FindByEmailAsync(Constants.AdminEmail);
+            if (user == null)
+                return Unauthorized($"User [{Constants.AdminEmail}] not found.");
+
+            await identityProviderService.UpdateTokenAsync(user);
+            return Ok(user);
+        }
+
+        [HttpGet(nameof(TestAdminToken))]
+        public async Task<IActionResult> TestAdminToken()
+        {
+            var user = await identityProviderService.ExtractUserFromBearerAsync();
+            return Ok(user);
         }
     }
 }

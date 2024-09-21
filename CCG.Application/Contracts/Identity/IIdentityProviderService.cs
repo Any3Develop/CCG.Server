@@ -4,7 +4,7 @@ namespace CCG.Application.Contracts.Identity
 {
     public interface IIdentityProviderService
     {
-        Task<UserEntity> UpdateToken(UserEntity user);
+        Task<UserEntity> UpdateTokenAsync(UserEntity user);
 
         Task<UserEntity> ExtractUserFromBearerAsync();
     }

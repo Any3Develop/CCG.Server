@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CCG.Application;
 using CCG.Application.Contracts.Identity;
 using CCG.Domain.Entities.Identity;
+using CCG.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -74,11 +76,9 @@ namespace CCG.WebApi.Pages.Admin
 			if (result.Succeeded)
 			{
 				var user = await userManager.FindByNameAsync(Input.UserName);
-				var token = await identityProvider.UpdateToken(user);
+				user = await identityProvider.UpdateTokenAsync(user);
 
-				await userManager.UpdateAsync(user);
-
-				Response.Cookies.Append("access_token", token.AccessToken);
+				Response.Cookies.Append(Constants.AccessTokenParam, user.AccessToken);
 
 				logger.LogInformation("User logged in.");
 				return LocalRedirect(returnUrl);

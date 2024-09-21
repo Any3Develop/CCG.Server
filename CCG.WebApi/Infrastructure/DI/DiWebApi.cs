@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using CCG.Application;
 using CCG.Application.Contracts.Identity;
 using CCG.Application.Services;
 using CCG.Infrastructure.Configurations;
@@ -44,10 +45,10 @@ namespace CCG.WebApi.Infrastructure.DI
                     ValidateIssuer = true,
                     ValidIssuer = jwtTokenConfig.Issuer,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtTokenConfig.Secret)),
                     ValidAudience = jwtTokenConfig.Audience,
                     ValidateAudience = false,
-                    ValidateLifetime = false,
+                    ValidateLifetime = true,
                     SaveSigninToken = true,
                     ClockSkew = TimeSpan.FromMinutes(1),
                     RoleClaimType = ClaimTypes.Role,
@@ -57,25 +58,17 @@ namespace CCG.WebApi.Infrastructure.DI
                 {
                     OnMessageReceived = context =>
                     {
-                        var tokenFromQuery = context.Request.Query["access_token"];
-
-                        var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(tokenFromQuery) && path.StartsWithSegments("/hubs/"))
+                        if (context.Request.Headers.TryGetValue("Authorization", out var stringValues)
+                            || context.Request.Query.TryGetValue(Constants.AccessTokenParam, out stringValues))
                         {
-                            context.Token = tokenFromQuery;
+                            context.Token = stringValues.ToString().Split(' ').Last();
                             return Task.CompletedTask;
                         }
-
-                        var tokenFromHeader = context.Request.Headers["access_token"];
-                        if (!string.IsNullOrEmpty(tokenFromHeader))
-                        {
-                            context.Token = tokenFromHeader;
+                        
+                        if (!context.Request.Cookies.TryGetValue(Constants.AccessTokenParam, out var tokenString))
                             return Task.CompletedTask;
-                        }
-
-                        var tokenFromCookie = context.Request.Cookies["access_token"];
-                        context.Token = tokenFromCookie;
-
+                        
+                        context.Token = tokenString.Split(' ').Last();
                         return Task.CompletedTask;
                     }
                 };
@@ -117,7 +110,7 @@ namespace CCG.WebApi.Infrastructure.DI
 
                 c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
                 c.AddSecurityRequirement(requirement);
-                c.OperationFilter<ReqTokenOperationFilter>();
+                // c.OperationFilter<ReqTokenOperationFilter>();
 
                 var filePath = Path.Combine(AppContext.BaseDirectory,
                     $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
@@ -133,7 +126,8 @@ namespace CCG.WebApi.Infrastructure.DI
             services.AddCors(o => o.AddPolicy("AllowAll", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddResponseCaching();
             services.AddResponseCompression();
-
+            services.AddSignalR();
+            
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IIdentityProviderService, IdentityProviderService>();
             services.AddSingleton<IApplicationEnvironment, ApplicationEnvironment>();

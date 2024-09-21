@@ -2,6 +2,7 @@
 using CCG.Application.Services;
 using CCG.Infrastructure.Persistence.DbSeed;
 using CCG.WebApi.Infrastructure.Middleware;
+using CCG.WebApi.Infrastructure.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,10 +36,7 @@ namespace CCG.WebApi.Infrastructure.Configurations
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                foreach (var route in endpoints.DataSources.SelectMany(ds => ds.Endpoints))
-                {
-                    Console.WriteLine($"Маршрут: {route.DisplayName}");
-                }
+                endpoints.MapHub<GameHub>("/game");
             });
             services.EnsureNonLazySingletones(); // create all non lazy singletons.
 
