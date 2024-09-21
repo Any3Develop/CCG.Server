@@ -2,7 +2,7 @@
 
 namespace CCG.Application.DI
 {
-    public static class DiNoneLazySignlentonService
+    public static class DiNonLazySignlentonService
     {
         private static List<Type> nonLazySingletons = new();
 
