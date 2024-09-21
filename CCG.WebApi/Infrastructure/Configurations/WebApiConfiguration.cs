@@ -1,5 +1,6 @@
-﻿using CCG.Application.DI;
-using CCG.Application.Services;
+﻿using CCG.Application.Contracts;
+using CCG.Application.DI;
+using CCG.Application.Utilities;
 using CCG.Infrastructure.Persistence.DbSeed;
 using CCG.WebApi.Infrastructure.Middleware;
 using CCG.WebApi.Infrastructure.SignalR;

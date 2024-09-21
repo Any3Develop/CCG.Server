@@ -1,5 +1,6 @@
 using CCG.Application;
 using CCG.Application.Contracts.Persistence;
+using CCG.Application.Utilities;
 using CCG.Domain.Entities.Identity;
 using CCG.Shared.Common.Logger;
 using Microsoft.AspNetCore.Identity;

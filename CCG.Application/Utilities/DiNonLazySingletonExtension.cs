@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CCG.Application.DI
+namespace CCG.Application.Utilities
 {
-    public static class DiNonLazySignlentonService
+    public static class DiNonLazySingletonExtension
     {
         private static List<Type> nonLazySingletons = new();
 

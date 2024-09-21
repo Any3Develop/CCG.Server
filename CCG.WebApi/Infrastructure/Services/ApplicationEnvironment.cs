@@ -1,4 +1,4 @@
-using CCG.Application.Services;
+using CCG.Application.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

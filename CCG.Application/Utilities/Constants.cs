@@ -1,4 +1,4 @@
-﻿namespace CCG.Application
+﻿namespace CCG.Application.Utilities
 {
     public static class Constants
     {

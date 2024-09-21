@@ -1,4 +1,4 @@
-namespace CCG.Application.Services
+namespace CCG.Application.Contracts
 {
 	public interface IApplicationEnvironment
 	{

@@ -1,5 +1,6 @@
 ﻿using CCG.Application;
 using CCG.Application.Contracts.Identity;
+using CCG.Application.Utilities;
 using CCG.Domain.Entities.Identity;
 using CCG.Infrastructure.Persistence;
 using CCG.WebApi.Infrastructure;
