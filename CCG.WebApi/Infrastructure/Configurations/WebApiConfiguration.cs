@@ -123,7 +123,7 @@ namespace CCG.WebApi.Infrastructure.Configurations
                     c.IncludeXmlComments(filePath, true);
             });
 
-            service.AddCors(options => options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            service.AddCors(o => o.AddPolicy("AllowAll", b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             service.AddResponseCaching();
             service.AddResponseCompression();
         }
