@@ -6,7 +6,7 @@ namespace CCG.Application.DI
     {
         private static List<Type> nonLazySingletons = new();
 
-        public static void AddNoneLazySingleton<TService, TImplementation>(this IServiceCollection service)
+        public static void AddNonLazySingleton<TService, TImplementation>(this IServiceCollection service)
             where TService : class
             where TImplementation : class, TService
         {
