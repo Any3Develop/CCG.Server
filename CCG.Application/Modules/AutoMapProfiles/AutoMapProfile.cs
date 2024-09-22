@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CCG.Domain.Entities.Identity;
+using CCG.Shared.Api;
 
 namespace CCG.Application.Modules.AutoMapProfiles
 {
@@ -6,7 +8,7 @@ namespace CCG.Application.Modules.AutoMapProfiles
     {
         public AutoMapProfile(IServiceProvider serviceProvider)
         {
-            // TODO automap
+            CreateMap<UserEntity, UserData>();
         }
     }
 }

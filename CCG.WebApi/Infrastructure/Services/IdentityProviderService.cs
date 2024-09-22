@@ -19,6 +19,9 @@ namespace CCG.WebApi.Infrastructure.Services
 	{
 		public async Task<UserEntity> UpdateTokenAsync(UserEntity user)
 		{
+			if (user.AccessTokenExpireAt > DateTime.UtcNow.AddMinutes(10))
+				return user;
+			
 			user.AccessTokenExpireAt = DateTime.UtcNow.AddYears(1);
 			user.AccessToken = await GenerateJwtTokenAsync(user);
 			await dbContext.SaveChangesAsync();
