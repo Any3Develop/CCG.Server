@@ -1,4 +1,4 @@
-﻿using CCG.Application.Contracts.Identity;
+﻿using CCG.Application.Contracts.Services.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 

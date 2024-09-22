@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using CCG.Application.Contracts.Identity;
-using CCG.Domain.Entities.Identity;
-using CCG.Shared.Api;
+﻿using CCG.Application.Contracts.Services.Identity;
+using CCG.Application.Exteptions;
 using CCG.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CCG.WebApi.Controllers
@@ -12,44 +9,44 @@ namespace CCG.WebApi.Controllers
     [Route("api/" + VersionInfo.ApiVersion + "/[controller]")]
     [ApiController]
     [Authorize]
-    public class IdentityController(
-        IMapper mapper,
-        IIdentityProviderService identityProviderService,
-        SignInManager<UserEntity> signInManager,
-        UserManager<UserEntity> userManager) : ControllerBase
+    public class IdentityController(IIdentityService identityService) : ControllerBase
     {
         [AllowAnonymous]
         [HttpPost(nameof(Register))]
         public async Task<IActionResult> Register(string userName, string password)
         {
-            var user = new UserEntity
+            try
             {
-                UserName = userName
-            };
-
-            var result = await userManager.CreateAsync(user, password);
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            return await Login(userName, password);
+                var result = await identityService.RegisterAsync(userName, password);
+                return Ok(result);
+            }
+            catch (UnauthorizedException e)
+            {
+                return Unauthorized(e);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
         
         [AllowAnonymous]
         [HttpPost(nameof(Login))]
         public async Task<IActionResult> Login(string userName, string password)
         {
-            var user = await userManager.FindByNameAsync(userName);
-            if (user == null)
-                return Unauthorized("Invalid credentials.");
-
-            var result = await signInManager.PasswordSignInAsync(user.UserName, password, false, true);
-            if (!result.Succeeded)
-                return Unauthorized(result.IsLockedOut
-                    ? "User is locked out."
-                    : "Invalid credentials.");
-            
-            await identityProviderService.UpdateTokenAsync(user);
-            return Ok(mapper.Map<UserData>(user));
+            try
+            {
+                var result = await identityService.LoginAsync(userName, password);
+                return Ok(result);
+            }
+            catch (UnauthorizedException e)
+            {
+                return Unauthorized(e);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

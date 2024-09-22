@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using CCG.Application;
 using CCG.Application.Contracts;
-using CCG.Application.Contracts.Identity;
+using CCG.Application.Contracts.Services.Identity;
 using CCG.Application.Utilities;
 using CCG.Infrastructure.Configurations;
 using CCG.WebApi.Infrastructure.ActionFilter;
