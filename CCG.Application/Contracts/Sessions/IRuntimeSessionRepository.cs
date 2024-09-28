@@ -1,6 +1,6 @@
-﻿using CCG.Application.Services.Sessions;
+﻿using CCG.Application.Modules.Sessions;
 
-namespace CCG.Application.Contracts.Services.Sessions
+namespace CCG.Application.Contracts.Sessions
 {
     public interface IRuntimeSessionRepository
     {

@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace CCG.Application.Contracts.Services.Identity
+namespace CCG.Application.Contracts.Identity
 {
     public interface ICurrentUserService
     {

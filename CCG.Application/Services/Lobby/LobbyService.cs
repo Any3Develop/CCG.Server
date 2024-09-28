@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CCG.Application.Contracts.Persistence;
-using CCG.Application.Contracts.Services.Sessions;
+using CCG.Application.Contracts.Sessions;
 using CCG.Application.Exteptions;
 using CCG.Domain.Entities.Identity;
 using CCG.Domain.Entities.Lobby;

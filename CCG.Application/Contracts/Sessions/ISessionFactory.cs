@@ -1,7 +1,7 @@
-using CCG.Application.Services.Sessions;
+using CCG.Application.Modules.Sessions;
 using CCG.Domain.Entities.Lobby;
 
-namespace CCG.Application.Contracts.Services.Sessions
+namespace CCG.Application.Contracts.Sessions
 {
     public interface ISessionFactory
     {

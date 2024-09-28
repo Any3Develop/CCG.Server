@@ -6,6 +6,8 @@ namespace CCG.WebApi.Infrastructure.Services
 {
 	public class ApplicationEnvironment(IWebHostEnvironment env) : IApplicationEnvironment
 	{
+		public string CurrentDomainServer { get; set; }
+		
 		public string GetContentRootPath() => env.ContentRootPath;
 
 		public string GetWebRootPath() => env.WebRootPath;
@@ -36,17 +38,5 @@ namespace CCG.WebApi.Infrastructure.Services
 		{
 			return env.IsEnvironment("Staging");
 		}
-    
-		public bool IsPts()
-		{
-			return env.IsEnvironment("Pts");
-		}
-    
-		public bool IsRc()
-		{
-			return env.IsEnvironment("Rc");
-		}
-
-		public string CurrentDomainServer { get; set; }
 	}
 }

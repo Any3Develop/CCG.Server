@@ -2,12 +2,10 @@
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
-using CCG.Application;
 using CCG.Application.Contracts;
-using CCG.Application.Contracts.Services.Identity;
+using CCG.Application.Contracts.Identity;
 using CCG.Application.Utilities;
 using CCG.Infrastructure.Configurations;
-using CCG.WebApi.Infrastructure.ActionFilter;
 using CCG.WebApi.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -111,7 +109,6 @@ namespace CCG.WebApi.Infrastructure.DI
 
                 c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
                 c.AddSecurityRequirement(requirement);
-                // c.OperationFilter<ReqTokenOperationFilter>();
 
                 var filePath = Path.Combine(AppContext.BaseDirectory,
                     $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");

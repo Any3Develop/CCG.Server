@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using CCG.Application.Contracts.Services.Sessions;
+using CCG.Application.Contracts.Sessions;
 
-namespace CCG.Application.Services.Sessions
+namespace CCG.Application.Modules.Sessions
 {
     public class RuntimeSessionRepository : IRuntimeSessionRepository
     {
@@ -19,7 +19,7 @@ namespace CCG.Application.Services.Sessions
 
         public bool Remove(string id)
         {
-            return sessions.TryRemove(id, out _);
+            return !string.IsNullOrEmpty(id) && sessions.TryRemove(id, out _);
         }
 
         public bool Remove(SessionObject sessionObject)

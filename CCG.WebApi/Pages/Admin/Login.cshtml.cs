@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CCG.Application;
-using CCG.Application.Contracts.Services.Identity;
+using CCG.Application.Contracts.Identity;
 using CCG.Application.Utilities;
 using CCG.Domain.Entities.Identity;
 using CCG.Infrastructure.Persistence;

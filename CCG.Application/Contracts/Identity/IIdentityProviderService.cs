@@ -1,6 +1,6 @@
 using CCG.Domain.Entities.Identity;
 
-namespace CCG.Application.Contracts.Services.Identity
+namespace CCG.Application.Contracts.Identity
 {
     public interface IIdentityProviderService
     {

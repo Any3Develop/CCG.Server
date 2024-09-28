@@ -1,4 +1,4 @@
-﻿using CCG.Application.Contracts.Services.Identity;
+﻿using CCG.Application.Contracts.Identity;
 using CCG.Application.Exteptions;
 using CCG.WebApi.Infrastructure;
 using Microsoft.AspNetCore.Authorization;

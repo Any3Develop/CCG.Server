@@ -1,8 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CCG.Application.Contracts.Identity;
 using CCG.Application.Contracts.Persistence;
-using CCG.Application.Contracts.Services.Identity;
 using CCG.Domain.Entities.Identity;
 using CCG.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Identity;
