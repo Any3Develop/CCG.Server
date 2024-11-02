@@ -21,8 +21,8 @@ namespace CCG.Application.Modules.Sessions
         public IRuntimeContextModel RuntimeData { get; private set; }
         public IObjectsCollection ObjectsCollection { get; set; }
         public IPlayersCollection PlayersCollection { get; set; }
-        public IRuntimeOrderProvider RuntimeOrderProvider { get; set; }
         public IRuntimeRandomProvider RuntimeRandomProvider { get; set; }
+        public IRuntimeOrderProvider RuntimeOrderProvider { get; set; }
         public IRuntimeIdProvider RuntimeIdProvider { get; set; }
         #endregion
 
@@ -35,6 +35,7 @@ namespace CCG.Application.Modules.Sessions
         public IEventPublisher EventPublisher { get; set; }
         public IEventsSource EventSource { get; set; }
         public IRuntimeObjectFactory ObjectFactory { get; set; }
+        public IRuntimePlayerFactory PlayerFactory { get; set; }
         public IRuntimeEffectFactory EffectFactory { get; set; }
         public IRuntimeStatFactory StatFactory { get; set; }
         public IContextFactory ContextFactory { get; set; }

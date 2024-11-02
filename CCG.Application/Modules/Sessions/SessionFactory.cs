@@ -19,22 +19,24 @@ namespace CCG.Application.Modules.Sessions
     {
         public ISession Create(SessionEntity session)
         {
-            var sessionPlayers = mapper.Map<List<SessionPlayer>>(session.Players);
-            var contextModel = new RuntimeContextModel
-            {
-                Id = session.Id,
-                Players = sessionPlayers
-            };
-            
-            return new CCGSession(CreateContext().Sync(contextModel));
+            var context = CreateContext();
+            Init(context, session);
+            return new CCGSession(context);
         }
 
         private CCGContext CreateContext()
         {
-            var contextEventSource = contextFactory.CreateEventsSource();
-            var contextEventPublisher = contextFactory.CreateEventPublisher(contextEventSource);
-            var objectsCollection = contextFactory.CreateObjectsCollection(contextEventPublisher);
-            var runtimeIdProvider = contextFactory.CreateRuntimeIdProvider();
+            var eventsSource = contextFactory.CreateEventsSource();
+            var eventPublisher = contextFactory.CreateEventPublisher(eventsSource);
+            var objectsCollection = contextFactory.CreateObjectsCollection(eventPublisher);
+
+            var randomProvider = contextFactory.CreateRuntimeRandomProvider();
+            var orderProvider = contextFactory.CreateRuntimeOrderProvider();
+            var idProvider = contextFactory.CreateRuntimeIdProvider();
+            
+            var playersCollection = contextFactory.CreatePlayersCollection();
+            var statsFactory = contextFactory.CreateStatFactory(objectsCollection, idProvider);
+            var gameQueueCollector = contextFactory.CreateGameQueueCollector(eventsSource, eventPublisher, orderProvider);
             
             var context = new CCGContext
             {
@@ -42,29 +44,42 @@ namespace CCG.Application.Modules.Sessions
                 Config = config,
                 Database = database,
                 ObjectsCollection = objectsCollection,
-                PlayersCollection = contextFactory.CreatePlayersCollection(),
-                RuntimeOrderProvider = contextFactory.CreateRuntimeOrderProvider(),
-                RuntimeRandomProvider = contextFactory.CreateRuntimeRandomProvider(),
-                RuntimeIdProvider = runtimeIdProvider,
-                EventPublisher = contextEventPublisher,
-                EventSource = contextEventSource,
+                PlayersCollection = playersCollection,
+                RuntimeRandomProvider = randomProvider,
+                RuntimeOrderProvider = orderProvider,
+                RuntimeIdProvider = idProvider,
+                
+                ObjectEventProcessor = contextFactory.CreateObjectEventProcessor(gameQueueCollector),
+                ContextEventProcessor = contextFactory.CreateContextEventProcessor(eventsSource, idProvider, orderProvider, randomProvider),
+                GameQueueCollector = gameQueueCollector,
+                EventPublisher = eventPublisher,
+                EventSource = eventsSource,
+
+                ObjectFactory = contextFactory.CreateObjectFactory(objectsCollection, idProvider, statsFactory),
+                PlayerFactory = contextFactory.CreatePlayerFactory(playersCollection, idProvider, statsFactory),
+                EffectFactory = contextFactory.CreateEffectFactory(objectsCollection, idProvider),
+                StatFactory = statsFactory,
                 ContextFactory = contextFactory,
             };
-
-            var commandFactory = contextFactory.CreateCommandFactory(context);
-            var gameQueueCollector = contextFactory.CreateGameQueueCollector(context, contextEventSource);
-            var statsFactory = contextFactory.CreateStatFactory(database, objectsCollection, runtimeIdProvider);
             
-            context.GameQueueCollector = gameQueueCollector;
-            context.CommandProcessor = contextFactory.CreateCommandProcessor(context, commandFactory);
-            context.StatFactory = contextFactory.CreateStatFactory(database, objectsCollection, runtimeIdProvider);
-            context.ObjectFactory = contextFactory.CreateObjectFactory(database, objectsCollection, runtimeIdProvider, statsFactory);
-            context.EffectFactory = contextFactory.CreateEffectFactory(database, objectsCollection, runtimeIdProvider);
-            context.ObjectEventProcessor = contextFactory.CreateObjectEventProcessor(context, gameQueueCollector);
-            context.ContextEventProcessor = contextFactory.CreateContextEventProcessor(context);
             context.GameEventProcessor = contextFactory.CreateGameEventProcessor(context);
+            context.CommandProcessor = contextFactory.CreateCommandProcessor(context);
             
             return context;
+        }
+
+        private void Init(CCGContext context, SessionEntity sessionEntity)
+        {
+            var contextModel = new RuntimeContextModel
+            {
+                Id = sessionEntity.Id,
+                Players = mapper.Map<List<SessionPlayer>>(sessionEntity.Players)
+            };
+
+            context.Sync(contextModel);
+            context.RuntimeIdProvider.Sync(new RuntimeIdModel());
+            context.RuntimeOrderProvider.Sync(new RuntimeOrderModel());
+            context.RuntimeRandomProvider.Sync(new RuntimeRandomModel());
         }
     }
 }
