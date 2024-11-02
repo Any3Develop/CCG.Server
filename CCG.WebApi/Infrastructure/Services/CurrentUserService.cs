@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using CCG.Application;
 using CCG.Application.Contracts.Identity;
 using CCG.Application.Utilities;
 using Microsoft.AspNetCore.Authentication;

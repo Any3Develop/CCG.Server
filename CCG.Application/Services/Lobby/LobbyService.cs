@@ -95,15 +95,15 @@ namespace CCG.Application.Services.Lobby
            return sessionEntity;
         }
 
-        public async Task<SessionModel> StartSessionAsync(SessionEntity session)
+        public async Task<SessionModel> StartSessionAsync(SessionEntity sessionEntity)
         {
-            if (session.StartTime.HasValue)
-                throw new ValidationException($"Can't start session twice : {session.Id}");
+            if (sessionEntity.StartTime.HasValue)
+                throw new ValidationException($"Can't start session twice : {sessionEntity.Id}");
             
-            var sessionObject = runtimeSessionRepository.Get(session.Id);
-            sessionObject.Start();
-
-            session.StartTime = sessionObject.StartTime;
+            var session = runtimeSessionRepository.Get(sessionEntity.Id);
+            session.Start();
+            sessionEntity.StartTime = session.Context.RuntimeData.StartTime;
+            
             await dbContext.SaveChangesAsync();
             
             return mapper.Map<SessionModel>(session);

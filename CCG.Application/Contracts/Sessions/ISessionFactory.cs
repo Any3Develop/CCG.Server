@@ -1,10 +1,10 @@
-using CCG.Application.Modules.Sessions;
 using CCG.Domain.Entities.Lobby;
+using CCG.Shared.Abstractions.Game.Context.Session;
 
 namespace CCG.Application.Contracts.Sessions
 {
     public interface ISessionFactory
     {
-        SessionObject Create(SessionEntity session);
+        ISession Create(SessionEntity session);
     }
 }

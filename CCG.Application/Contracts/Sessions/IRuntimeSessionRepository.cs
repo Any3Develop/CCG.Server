@@ -1,12 +1,12 @@
-﻿using CCG.Application.Modules.Sessions;
+﻿using CCG.Shared.Abstractions.Game.Context.Session;
 
 namespace CCG.Application.Contracts.Sessions
 {
     public interface IRuntimeSessionRepository
     {
-        SessionObject Get(string id);
-        void Add(SessionObject sessionObject);
+        ISession Get(string id);
+        void Add(ISession runtimeSession);
         bool Remove(string id);
-        bool Remove(SessionObject sessionObject);
+        bool Remove(ISession runtimeSession);
     }
 }

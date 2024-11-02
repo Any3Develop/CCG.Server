@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CCG.Domain.Entities.Identity;
 using CCG.Domain.Entities.Lobby;
-using CCG.Shared.Api.Game;
 using CCG.Shared.Api.Identity;
 using CCG.Shared.Game.Context.Session;
 

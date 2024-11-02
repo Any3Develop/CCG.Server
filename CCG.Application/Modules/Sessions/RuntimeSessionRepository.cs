@@ -1,20 +1,21 @@
 ﻿using System.Collections.Concurrent;
 using CCG.Application.Contracts.Sessions;
+using CCG.Shared.Abstractions.Game.Context.Session;
 
 namespace CCG.Application.Modules.Sessions
 {
     public class RuntimeSessionRepository : IRuntimeSessionRepository
     {
-        private readonly ConcurrentDictionary<string, SessionObject> sessions = new();
+        private readonly ConcurrentDictionary<string, ISession> sessions = new();
 
-        public SessionObject Get(string id)
+        public ISession Get(string id)
         {
             return sessions[id];
         }
 
-        public void Add(SessionObject sessionObject)
+        public void Add(ISession runtimeSession)
         {
-            sessions[sessionObject.Id] = sessionObject;
+            sessions[runtimeSession.Id] = runtimeSession;
         }
 
         public bool Remove(string id)
@@ -22,9 +23,9 @@ namespace CCG.Application.Modules.Sessions
             return !string.IsNullOrEmpty(id) && sessions.TryRemove(id, out _);
         }
 
-        public bool Remove(SessionObject sessionObject)
+        public bool Remove(ISession runtimeSession)
         {
-            return Remove(sessionObject?.Id);
+            return Remove(runtimeSession?.Id);
         }
     }
 }
