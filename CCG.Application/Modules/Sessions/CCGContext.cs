@@ -4,6 +4,7 @@ using CCG.Shared.Abstractions.Game.Context.EventProcessors;
 using CCG.Shared.Abstractions.Game.Context.EventSource;
 using CCG.Shared.Abstractions.Game.Context.Providers;
 using CCG.Shared.Abstractions.Game.Factories;
+using CCG.Shared.Abstractions.Game.Runtime;
 using CCG.Shared.Abstractions.Game.Runtime.Models;
 
 namespace CCG.Application.Modules.Sessions
@@ -14,11 +15,11 @@ namespace CCG.Application.Modules.Sessions
         public ISharedTime SharedTime { get; set; }
         public ISharedConfig Config { get; set; }
         public IDatabase Database { get; set; }
-
         #endregion
 
         #region Runtime Context
         public IRuntimeContextModel RuntimeData { get; private set; }
+        public IRuntimeTimer RuntimeTimer { get; set; }
         public IObjectsCollection ObjectsCollection { get; set; }
         public IPlayersCollection PlayersCollection { get; set; }
         public IRuntimeRandomProvider RuntimeRandomProvider { get; set; }
@@ -38,6 +39,7 @@ namespace CCG.Application.Modules.Sessions
         public IRuntimePlayerFactory PlayerFactory { get; set; }
         public IRuntimeEffectFactory EffectFactory { get; set; }
         public IRuntimeStatFactory StatFactory { get; set; }
+        public IRuntimeTimerFactory TimerFactory { get; set; }
         public IContextFactory ContextFactory { get; set; }
         #endregion
 
