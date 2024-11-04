@@ -24,11 +24,11 @@ namespace CCG.Application.Modules.Sessions
             InitContext(context, session.Id, mapper.Map<List<SessionPlayer>>(session.Players));
             return new CCGSession(context);
         }
-        
+
         public ISession Create(IContextModel[] models)
         {
             var context = CreateContext();
-            InitContext(context, models);
+            FillContext(context, models);
             return new CCGSession(context);
         }
 
@@ -43,9 +43,10 @@ namespace CCG.Application.Modules.Sessions
             var orderProvider = contextFactory.CreateRuntimeOrderProvider();
             var idProvider = contextFactory.CreateRuntimeIdProvider();
 
-            var statsFactory = contextFactory.CreateStatFactory(objectsCollection, idProvider);
+            var statFactory = contextFactory.CreateStatFactory(objectsCollection, idProvider, playersCollection);
+            var effectFactory = contextFactory.CreateEffectFactory(objectsCollection, idProvider);
             var gameQueueCollector = contextFactory.CreateGameQueueCollector(eventsSource, eventPublisher, orderProvider);
-            
+
             var context = new CCGContext
             {
                 SharedTime = sharedTime,
@@ -63,10 +64,10 @@ namespace CCG.Application.Modules.Sessions
                 EventPublisher = eventPublisher,
                 EventSource = eventsSource,
 
-                ObjectFactory = contextFactory.CreateObjectFactory(objectsCollection, idProvider, statsFactory),
-                PlayerFactory = contextFactory.CreatePlayerFactory(playersCollection, idProvider, statsFactory),
-                EffectFactory = contextFactory.CreateEffectFactory(objectsCollection, idProvider),
-                StatFactory = statsFactory,
+                ObjectFactory = contextFactory.CreateObjectFactory(objectsCollection, idProvider, statFactory, effectFactory),
+                PlayerFactory = contextFactory.CreatePlayerFactory(playersCollection, idProvider, statFactory),
+                EffectFactory = effectFactory,
+                StatFactory = statFactory,
                 ContextFactory = contextFactory,
             };
 
@@ -87,29 +88,27 @@ namespace CCG.Application.Modules.Sessions
                 context.TimerFactory.CreateModel(),
             };
             models.AddRange(players.Select((p, i) => context.PlayerFactory.CreateModel(p.Id, i)));
-
-            InitContext(context, models);
-            context.RuntimeRandomProvider.Next();
+            FillContext(context, models);
         }
-        
-        private void InitContext(CCGContext context, IReadOnlyCollection<IContextModel> models)
+
+        private void FillContext(CCGContext context, IReadOnlyCollection<IContextModel> models)
         {
             context.Sync(GetModel<IRuntimeContextModel>(models));
             context.RuntimeIdProvider.Sync(GetModel<IRuntimeIdModel>(models));
             context.RuntimeOrderProvider.Sync(GetModel<IRuntimeOrderModel>(models));
             context.RuntimeRandomProvider.Sync(GetModel<IRuntimeRandomModel>(models));
             context.RuntimeTimer = context.TimerFactory.Create(GetModel<IRuntimeTimerModel>(models), false);
-            
-            var players = models.OfType<IRuntimePlayerModel>().Select(model => context.PlayerFactory.Create(model, false));
-            context.PlayersCollection.AddRange(players, false);
+
+            foreach (var model in models.OfType<IRuntimePlayerModel>())
+                context.PlayerFactory.Create(model, false);
+
+            foreach (var model in models.OfType<IRuntimeObjectModel>())
+                context.ObjectFactory.Create(model, false);
         }
 
-        private static TModel GetModel<TModel>(IReadOnlyCollection<IContextModel> models, int? index = null)
+        private static TModel GetModel<TModel>(IReadOnlyCollection<IContextModel> models)
         {
-            if (!index.HasValue)
-                return (TModel) models.FirstOrDefault(x => x is TModel);
-
-            return models.OfType<TModel>().ElementAt(Math.Clamp(index.Value, 0, models.Count));
+            return (TModel) models.FirstOrDefault(x => x is TModel);
         }
     }
 }

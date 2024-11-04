@@ -43,12 +43,9 @@ namespace CCG.Application.Modules.Sessions
         public IContextFactory ContextFactory { get; set; }
         #endregion
 
-        public IContext Sync(IRuntimeContextModel value, bool notify = false)
+        public IContext Sync(IRuntimeContextModel value)
         {
             RuntimeData = value;
-            if (notify)
-                EventPublisher.Publish(null); // TODO notify context changed
-            
             return this;
         }
     }
