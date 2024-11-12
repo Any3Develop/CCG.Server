@@ -12,6 +12,7 @@ namespace CCG.Application.Modules.Sessions
 {
     public class SessionFactory(
         IMapper mapper,
+        ISystemTimers systemTimers,
         ISharedTime sharedTime,
         ISharedConfig config,
         IDatabase database,
@@ -49,6 +50,7 @@ namespace CCG.Application.Modules.Sessions
 
             var context = new CCGContext
             {
+                SystemTimers = systemTimers,
                 SharedTime = sharedTime,
                 Config = config,
                 Database = database,

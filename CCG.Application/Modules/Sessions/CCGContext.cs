@@ -12,6 +12,8 @@ namespace CCG.Application.Modules.Sessions
     public class CCGContext : IContext
     {
         #region Static Context
+
+        public ISystemTimers SystemTimers { get; set; }
         public ISharedTime SharedTime { get; set; }
         public ISharedConfig Config { get; set; }
         public IDatabase Database { get; set; }
