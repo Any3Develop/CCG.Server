@@ -4,7 +4,10 @@ using CCG.Application.Contracts.Sessions;
 using CCG.Application.Exteptions;
 using CCG.Domain.Entities.Identity;
 using CCG.Domain.Entities.Lobby;
+using CCG.Shared.Abstractions.Game.Factories;
 using CCG.Shared.Api.Lobby;
+using CCG.Shared.Game.Context;
+using CCG.Shared.Game.Runtime.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CCG.Application.Services.Lobby
@@ -90,8 +93,9 @@ namespace CCG.Application.Services.Lobby
 
            await dbContext.Sessions.AddAsync(sessionEntity);
            await dbContext.SaveChangesAsync();
-           
-           runtimeSessionRepository.Add(sessionFactory.Create(sessionEntity));
+
+           var sessionPlayers = mapper.Map<List<SessionPlayer>>(players);
+           runtimeSessionRepository.Add(sessionFactory.Create(sessionEntity.Id, sessionPlayers));
            return sessionEntity;
         }
 

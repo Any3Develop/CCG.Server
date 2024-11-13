@@ -1,5 +1,4 @@
 ﻿using CCG.Shared.Abstractions.Game.Context;
-using CCG.Shared.Abstractions.Game.Context.Session;
 
 namespace CCG.Application.Modules.Sessions
 {

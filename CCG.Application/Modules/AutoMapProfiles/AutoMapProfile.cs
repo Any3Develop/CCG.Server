@@ -2,7 +2,8 @@
 using CCG.Domain.Entities.Identity;
 using CCG.Domain.Entities.Lobby;
 using CCG.Shared.Api.Identity;
-using CCG.Shared.Game.Context.Session;
+using CCG.Shared.Game.Context;
+using CCG.Shared.Game.Runtime.Models;
 
 namespace CCG.Application.Modules.AutoMapProfiles
 {

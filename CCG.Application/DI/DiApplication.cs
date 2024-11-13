@@ -9,11 +9,13 @@ using CCG.Shared.Abstractions.Common.Logger;
 using CCG.Shared.Abstractions.Game.Collections;
 using CCG.Shared.Abstractions.Game.Context;
 using CCG.Shared.Abstractions.Game.Context.EventSource;
+using CCG.Shared.Abstractions.Game.Context.Providers;
 using CCG.Shared.Abstractions.Game.Factories;
 using CCG.Shared.Game.Attributes;
 using CCG.Shared.Game.Collections;
 using CCG.Shared.Game.Commands.Base;
 using CCG.Shared.Game.Context;
+using CCG.Shared.Game.Context.Providers;
 using CCG.Shared.Game.Enums;
 using CCG.Shared.Game.Factories;
 using CCG.Shared.Game.Runtime.Effects;
@@ -38,11 +40,13 @@ namespace CCG.Application.DI
             services.AddNonLazySingleton<ISharedLogger, AppSharedLogger>();
             services.AddNonLazySingleton<ITypeCollection<LogicId, RuntimeEffectBase>, SubclassTypeCollection<LogicId, RuntimeEffectBase>>(o => o.Collect<EffectLogicAttribute>(att => att.Value));
             services.AddNonLazySingleton<ITypeCollection<string, Command>, SubclassTypeCollection<string, Command>>(o => o.Collect());
-            
+             
+            services.AddSingleton<IDatabase, Database>();
             services.AddSingleton<ISharedTime, SharedTime>();
             services.AddSingleton<ISharedConfig, SharedConfig>();
-            services.AddSingleton<IDatabase, Database>();
+            services.AddSingleton<ISystemTimers, SystemTimers>();
             services.AddSingleton<IEventsSourceFactory, EventsSourceFactory>();
+            services.AddSingleton<IContextInitializer, SharedContextInitializer>();
             services.AddSingleton<IContextFactory, ContextFactory>();
         }
     }
