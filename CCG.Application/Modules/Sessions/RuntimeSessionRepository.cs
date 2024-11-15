@@ -18,9 +18,19 @@ namespace CCG.Application.Modules.Sessions
             sessions[runtimeSession.Id] = runtimeSession;
         }
 
+        public bool TryAdd(ISession runtimeSession)
+        {
+            return sessions.TryAdd(runtimeSession?.Id, runtimeSession);
+        }
+
         public bool Remove(string id)
         {
-            return !string.IsNullOrEmpty(id) && sessions.TryRemove(id, out _);
+            return sessions.TryRemove(id, out _);
+        }
+
+        public bool TryRemove(string id, out ISession result)
+        {
+            return sessions.TryRemove(id, out result);
         }
 
         public bool Remove(ISession runtimeSession)
