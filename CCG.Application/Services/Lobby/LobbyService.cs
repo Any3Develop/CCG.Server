@@ -85,6 +85,12 @@ namespace CCG.Application.Services.Lobby
 
         public async Task<SessionEntity> CreateSessionAsync(List<LobbyPlayerEntity> players)
         {
+            var firstPlayerIndex = new Random().Next(0, players.Count);
+            var firstPlayer = players[firstPlayerIndex];
+            firstPlayer.IsFirst = true;
+            players.RemoveAt(firstPlayerIndex);
+            players.Insert(0, firstPlayer);
+            
             var sessionEntity = new SessionEntity
             {
                 Players = players

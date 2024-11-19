@@ -11,6 +11,7 @@ namespace CCG.Domain.Entities.Lobby
         public string DeckId { get; set; }
         public string DuelId { get; set; }
         public string SessionId { get; set; }
+        public bool IsFirst { get; set; }
 
         [JsonIgnore] public virtual UserEntity User { get; set; }
         [JsonIgnore] public virtual DeckEntity Deck { get; set; }
