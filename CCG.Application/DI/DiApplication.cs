@@ -38,7 +38,7 @@ namespace CCG.Application.DI
         private static void InstallShared(IServiceCollection services)
         {
             services.AddNonLazySingleton<ISharedLogger, AppSharedLogger>();
-            services.AddNonLazySingleton<ITypeCollection<LogicId, RuntimeEffectBase>, SubclassTypeCollection<LogicId, RuntimeEffectBase>>(o => o.Collect<EffectLogicAttribute>(att => att.Value));
+            services.AddNonLazySingleton<ITypeCollection<EffectLogicId, RuntimeEffectBase>, SubclassTypeCollection<EffectLogicId, RuntimeEffectBase>>(o => o.Collect<EffectLogicAttribute>(att => att.Value));
             services.AddNonLazySingleton<ITypeCollection<string, Command>, SubclassTypeCollection<string, Command>>(o => o.Collect());
              
             services.AddSingleton<IDatabase, Database>();
